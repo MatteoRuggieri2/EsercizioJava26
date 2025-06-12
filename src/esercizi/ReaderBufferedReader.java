@@ -35,7 +35,8 @@ public class ReaderBufferedReader {
 		int character = 0;
 
         // Leggo ogni carattere del file finché non raggiunge la fine
-        do {
+		while (character != EOF) {
+        
         	try {
 				character = br.read();  // Mi restituisce il carattere in UNICODE, un numero intero, ovvero 2 byte
 			} catch (IOException e) {
@@ -44,14 +45,13 @@ public class ReaderBufferedReader {
         	
         	
         	
-        	if ((char) character == LF || (char) character == CR) {
-        		
-        		System.out.println("\n--- Fine della riga ---");  // NON FUNZIONA
+        	if ((char) character != LF && (char) character != CR) {
+        		if(character != EOF) { System.out.print((char) character); }
 			} else {
-				System.out.print((char) character);
+				System.out.print("\n");
 			}
-        	
-        } while (character != EOF);
+        
+		}
         
         
         
