@@ -21,50 +21,42 @@ public class ReaderBufferedReader {
 	private void run() {
 		File file = new File("src/text_files/words.txt");
 		BufferedReader br = null;
-		
-		// Apro il nuovo file
-		try {
-			br = new BufferedReader(new FileReader(file));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		
-		
-		
 		int character = 0;
+		boolean lastWasCR = false;
 
-        // Leggo ogni carattere del file finché non raggiunge la fine
-		while (character != EOF) {
-        
-        	try {
-				character = br.read();  // Mi restituisce il carattere in UNICODE, un numero intero, ovvero 2 byte
-			} catch (IOException e) {
-				e.printStackTrace();
-			} 
-        	
-        	
-        	
-        	if ((char) character != LF && (char) character != CR) {
-        		if(character != EOF) { System.out.print((char) character); }
-			} else {
-				System.out.print("\n");
-			}
-        
+		try {
+			
+			// Apro il nuovo file
+			br = new BufferedReader(new FileReader(file));
+		    character = br.read(); // Mi restituisce il carattere in UNICODE, un numero intero, ovvero 2 byte
+		   
+		    while (character != EOF) { // Leggo ogni carattere del file finché non raggiunge la fine
+		        
+		    	if (character == CR) {
+		            System.out.print("\n");
+		            lastWasCR = true;
+		        } else if (character == LF) {
+		            if (!lastWasCR) System.out.print("\n");
+		            lastWasCR = false;
+		        } else {
+		            System.out.print((char) character);
+		            lastWasCR = false;
+		        }
+		        
+		    	character = br.read();
+		    }
+		    
+		} catch (IOException e) {
+		    e.printStackTrace();
 		}
-        
-        
-        
         
         // Chiudo il BufferedReader
         try {
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		
+        
 	}
 
 }
